@@ -1,0 +1,325 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  runtime      = "nodejs"
+  moduleFormat = "esm"
+}
+
+// Connection URLs are no longer set here in Prisma 7 — the CLI reads them
+// from prisma.config.ts (DIRECT_URL) and the runtime client gets its
+// connection via the @prisma/adapter-pg driver adapter (DATABASE_URL),
+// see src/client.ts.
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  admin
+  member
+}
+
+model User {
+  id                          String    @id
+  email                       String    @unique
+  name                        String?
+  role                        UserRole  @default(member)
+  isOnboarded                 Boolean   @default(false)
+  emailConfirmedAt            DateTime?
+  lastVerificationEmailSentAt DateTime?
+  curriculum                  String?
+  grade                       String?
+  schoolName                  String?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+
+  studyPlans StudyPlan[]
+  subjects   Subject[]
+  aiSessions AiSession[]
+  libraryItems LibraryItem[]
+  studyNotes StudyNote[]
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Catalog: subjects -> topics -> subtopics
+// ---------------------------------------------------------------------------
+
+model Subject {
+  id        BigInt   @id @default(autoincrement())
+  userId    String?  @map("user_id")
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User?   @relation(fields: [userId], references: [id])
+  topics Topic[]
+
+  @@index([userId])
+  @@map("subjects")
+}
+
+model Topic {
+  id        BigInt   @id @default(autoincrement())
+  subjectId BigInt   @map("subject_id")
+  name      String
+  code      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  subject   Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subtopics Subtopic[]
+  planTasks PlanTask[]
+
+  @@index([subjectId])
+  @@map("topics")
+}
+
+model Subtopic {
+  id        BigInt   @id @default(autoincrement())
+  topicId   BigInt   @map("topic_id")
+  name      String
+  code      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  topic     Topic      @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  planTasks PlanTask[]
+
+  @@index([topicId])
+  @@map("subtopics")
+}
+
+// ---------------------------------------------------------------------------
+// Study plans
+// ---------------------------------------------------------------------------
+
+model StudyPlan {
+  id               BigInt   @id @default(autoincrement())
+  userId           String   @map("user_id")
+  name             String
+  startDate        DateTime @map("start_date") @db.Date
+  endDate          DateTime @map("end_date") @db.Date
+  durationDays     Int      @map("duration_days")
+  status           String   @default("active")
+  studyHoursPerDay Decimal  @map("study_hours_per_day") @db.Decimal(4, 1)
+  draftSnapshot    Json?    @map("draft_snapshot")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  user User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  days PlanDay[]
+
+  @@index([userId])
+  @@map("study_plans")
+}
+
+model PlanDay {
+  id            BigInt   @id @default(autoincrement())
+  planId        BigInt   @map("plan_id")
+  dayNumber     Int      @map("day_number")
+  scheduledDate DateTime @map("scheduled_date") @db.Date
+  isRestDay     Boolean  @default(false) @map("is_rest_day")
+  notes         String?
+  status        String   @default("pending")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  plan       StudyPlan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+  tasks      PlanTask[]
+  aiSessions AiSession[]
+
+  @@unique([planId, dayNumber])
+  @@index([planId])
+  @@map("plan_days")
+}
+
+model PlanTask {
+  id            BigInt    @id @default(autoincrement())
+  planDayId     BigInt    @map("plan_day_id")
+  topicId       BigInt?   @map("topic_id")
+  subtopicId    BigInt?   @map("subtopic_id")
+  libraryItemId BigInt?   @map("library_item_id")
+  chapterId     String?   @map("chapter_id")
+  title         String?
+  orderIndex    Int       @default(0) @map("order_index")
+  status        String    @default("pending")
+  startedAt     DateTime? @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  planDay     PlanDay      @relation(fields: [planDayId], references: [id], onDelete: Cascade)
+  topic       Topic?       @relation(fields: [topicId], references: [id], onDelete: Restrict)
+  subtopic    Subtopic?    @relation(fields: [subtopicId], references: [id], onDelete: SetNull)
+  libraryItem LibraryItem? @relation(fields: [libraryItemId], references: [id], onDelete: SetNull)
+
+  @@index([planDayId])
+  @@index([topicId])
+  @@index([subtopicId])
+  @@index([libraryItemId])
+  @@map("plan_tasks")
+}
+
+// ---------------------------------------------------------------------------
+// Library — reusable study material. Lurniva items are platform-provided
+// (`userId IS NULL`, `scope = 'lurniva'`); personal items belong to a user
+// (`scope = 'personal'`). Content is distilled into a `SkillDoc` + status:
+// raw -> processing -> ready (or failed), so plans can attach material before
+// it is processed and process it on demand.
+// ---------------------------------------------------------------------------
+
+model LibraryItem {
+  id          BigInt    @id @default(autoincrement())
+  userId      String?   @map("user_id")
+  scope       String    @default("personal")
+  title       String
+  description String?
+  status      String    @default("raw")
+  sourceType  String    @default("text") @map("source_type")
+  fileName    String?   @map("file_name")
+  sourceText  String?   @db.Text @map("source_text")
+  skill       Json?
+  error       String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planTasks PlanTask[]
+
+  @@index([userId])
+  @@index([scope])
+  @@map("library_items")
+}
+
+// ---------------------------------------------------------------------------
+// AI sessions / messages / assessments — powers the per-day AI study page and
+// the standalone AI Study workspace. A day-anchored session is one per (day,
+// mode, feature): a day can carry several topics/tasks, so those sessions hang
+// off the PlanDay rather than a single task. A standalone AI Study session has
+// no `planDayId`; it carries its own topic context and response style in
+// `metadata`, so a user can keep as many conversations as they like.
+// ---------------------------------------------------------------------------
+
+model AiSession {
+  id            BigInt    @id @default(autoincrement())
+  /// Null for standalone AI Study sessions, which are not anchored to a plan day.
+  planDayId     BigInt?   @map("plan_day_id")
+  userId        String    @map("user_id")
+  mode          String
+  feature       String
+  title         String?
+  startedAt     DateTime  @default(now()) @map("started_at")
+  endedAt       DateTime? @map("ended_at")
+  lastMessageAt DateTime? @map("last_message_at")
+  metadata      Json      @default("{}")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  planDay  PlanDay?              @relation(fields: [planDayId], references: [id], onDelete: Cascade)
+  user     User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages AiMessage[]
+  attempts AiAssessmentAttempt[]
+
+  // Postgres treats NULLs as distinct, so day-anchored sessions stay one-per
+  // (day, mode, feature) while standalone AI Study sessions can repeat freely.
+  @@unique([planDayId, mode, feature])
+  @@index([planDayId])
+  @@index([userId])
+  @@index([mode, feature])
+  @@index([userId, lastMessageAt])
+  @@map("ai_sessions")
+}
+
+model AiMessage {
+  id          BigInt   @id @default(autoincrement())
+  sessionId   BigInt   @map("session_id")
+  role        String
+  content     String
+  contentJson Json?    @map("content_json")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  session AiSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@map("ai_messages")
+}
+
+model AiAssessmentAttempt {
+  id          BigInt    @id @default(autoincrement())
+  sessionId   BigInt    @map("session_id")
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+  score       Decimal?  @db.Decimal
+  metadata    Json      @default("{}")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  session AiSession            @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  answers AiAssessmentAnswer[]
+
+  @@index([sessionId])
+  @@map("ai_assessment_attempts")
+}
+
+model AiAssessmentAnswer {
+  id                BigInt   @id @default(autoincrement())
+  attemptId         BigInt   @map("attempt_id")
+  questionId        String   @map("question_id")
+  selectedOptionIdx Int?     @map("selected_option_idx")
+  isCorrect         Boolean? @map("is_correct")
+  responseText      String?  @map("response_text")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  attempt AiAssessmentAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+
+  @@index([attemptId])
+  @@map("ai_assessment_answers")
+}
+
+// ---------------------------------------------------------------------------
+// Teachers — platform-listed educators a student can browse and subscribe to.
+// Listed rows are platform-curated (seeded), so there is no owning user; only
+// `isPublished` rows are ever returned to the browse endpoint.
+// ---------------------------------------------------------------------------
+
+model Teacher {
+  id           BigInt   @id @default(autoincrement())
+  name         String
+  headline     String
+  bio          String?
+  avatarUrl    String?  @map("avatar_url")
+  subjects     String[]
+  monthlyFee   Int      @map("monthly_fee")
+  availability String   @default("available")
+  rating       Decimal? @db.Decimal(2, 1)
+  reviewCount  Int      @default(0) @map("review_count")
+  isPublished  Boolean  @default(true) @map("is_published")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // The browse list filters on isPublished and orders by (name, id).
+  @@index([isPublished, name, id])
+  @@map("teachers")
+}
+
+// ---------------------------------------------------------------------------
+// Study notes — text a student highlights in the AI document editor (or saves
+// whole from a chat answer) and files under a category. Shown on the "My
+// Notes" page, grouped by category.
+// ---------------------------------------------------------------------------
+
+model StudyNote {
+  id          BigInt   @id @default(autoincrement())
+  userId      String   @map("user_id")
+  text        String
+  categoryId  String   @map("category_id")
+  /// Where the note was taken from, e.g. "Physics · Day 3" — display only.
+  sourceLabel String?  @map("source_label")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, categoryId])
+  @@map("study_notes")
+}

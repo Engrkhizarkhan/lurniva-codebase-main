@@ -1,0 +1,6 @@
+{
+  "framework": null,
+  "buildCommand": "cd ../.. && pnpm --filter @lurniva/db generate && pnpm turbo run build --filter=@lurniva/web",
+  "outputDirectory": "dist/client",
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
+}

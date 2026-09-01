@@ -1,0 +1,26 @@
+# Lurniva
+
+> Lurniva is an AI-native learning ecosystem that connects students, teachers, content and AI in one place. It turns any educational material — a PDF, slides, a recording, or a published course — into lessons, personalised study plans, practice, and AI-graded feedback with source citations.
+
+Lurniva serves four audiences on one shared content engine: students studying with an AI Companion bound to their own material, teachers who upload content and get AI-generated lectures plus AI-assisted grading, institutes that turn their syllabi into an AI-powered learning environment for their students, and organizations building internal training from handbooks and recordings. Supported curriculum systems include Cambridge International (IGCSE/AS/A Level), the National Curriculum of Pakistan, the Single National Curriculum, and O/A Levels, with the International Baccalaureate in development.
+
+## Product surfaces
+
+- [AI Companion](https://lurniva.com/#student): a chat-based study assistant that answers only from the student's actual course or uploaded material, with page-level citations, and can turn any answer into flashcards or a practice set.
+- [Lesson Planner](https://lurniva.com/#planner): generates a day-by-day study schedule from a chosen subject, number of days, and minutes available per day.
+- [My Notes](https://lurniva.com/#notes): highlights and AI explanations saved from study sessions, organised into a personal knowledge base per subject.
+- [Teacher content pipeline](https://lurniva.com/#teacher): upload PDFs, slides or video; Lurniva indexes chapters, definitions, diagrams and worked examples, and can generate a narrated AI lecture from them.
+- [AI Examiner](https://lurniva.com/#examiner): grades student scripts against the source material, evaluates method and reasoning (not just the final answer), flags borderline answers for teacher review, and reports concept-level mastery.
+- [Institutes](https://lurniva.com/#institutes): institutions index their own content library and get cohort management, assignment, and mastery analytics across students and teachers.
+- [Organizations](https://lurniva.com/#orgs) (early access): the same engine applied to internal knowledge bases, onboarding paths and compliance training instead of textbooks.
+- [Teacher marketplace](https://lurniva.com/#teachers): students can browse and follow individual teachers' channels and courses.
+
+## Pricing
+
+Free tiers exist for both students and teachers. Student Premium is a flat monthly subscription; teachers choose between a free tier, a revenue-share Creator plan, or a flat-fee Professional plan with a lower revenue share. Institute and organization pricing is usage-based and quoted on request. Full current pricing: https://lurniva.com/#pricing
+
+## Docs
+
+- [Frequently asked questions](https://lurniva.com/#faq): what Lurniva is, how the AI Companion and AI Examiner work, supported curricula, and what's on the roadmap.
+- [About](https://lurniva.com/#about): why Lurniva exists and the product principles behind it.
+- [Contact](https://lurniva.com/#contact): info@lurniva.com (general), institutes@lurniva.com (institute partnerships), teachers@lurniva.com (teaching on Lurniva).

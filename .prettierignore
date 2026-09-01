@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+**/dist/**
+**/build/**
+**/.output/**
+**/.vinxi/**
+**/.astro/**
+**/.turbo/**
+**/generated/**
+**/node_modules/**
+**/routeTree.gen.ts

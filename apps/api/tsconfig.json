@@ -1,0 +1,11 @@
+{
+  "extends": "@lurniva/typescript-config/react-app.json",
+  "compilerOptions": {
+    "paths": {
+      "*": ["./src/*"],
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", ".vinxi"]
+}

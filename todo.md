@@ -1,0 +1,9 @@
+- group sidebar nav items into (learning) (community) (account)
+- a complete new route for talking with AI, Chat with AI, user can select
+- make AI response have a better UX
+- create UI for all the Assessment Modes i.e mcqs, short questions, mock exam, flashcards
+- make the system give information about, what topic is selected, how should AI response be i.e summary, revision notes, detailed guide, last minute revision notes
+- make the 'study mode' dropdown show the selected mode
+- show user conversations/history
+- user should be able to generate a new session with AI,
+- window should auto-focus on ai chat input after AI gives a response

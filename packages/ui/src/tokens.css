@@ -1,0 +1,317 @@
+@theme {
+  /* Brand base */
+  --color-forest-900: #021b12;
+  --color-forest-800: #033824; /* Primary — brand core */
+  --color-forest-700: #0a4d33;
+  --color-forest-600: #116343;
+  --color-forest-500: #1c8055;
+  --color-forest-300: #7bbf9f;
+  --color-forest-100: #d6ebe0;
+  --color-forest-050: #eef7f2;
+
+  --color-ember-700: #b34505;
+  --color-ember-600: #e05c08;
+  --color-ember-500: #ff7110; /* Secondary — brand orange */
+  --color-ember-300: #ffa869;
+  --color-ember-100: #ffe3cf;
+  --color-ember-050: #fff2e8;
+
+  --color-lime-700: #8aac16;
+  --color-lime-600: #b0d62c;
+  --color-lime-500: #d1f941; /* Accent / AI signature */
+  --color-lime-300: #e3fc88;
+  --color-lime-100: #f2fecc;
+
+  --color-amber-600: #d98800;
+  --color-amber-500: #ffaa39; /* Warning / gamification */
+  --color-amber-100: #ffeacc;
+
+  --color-clay-600: #b8371c;
+  --color-clay-500: #d94a2b; /* Error */
+  --color-clay-100: #fbdfd8;
+
+  --color-teal-600: #0b6a72;
+  --color-teal-500: #0e7c86; /* Info / Teacher role */
+  --color-teal-100: #d5eef0;
+
+  /* Warm neutrals (tuned to the cream canvas) */
+  --color-cream-050: #fffbf5;
+  --color-cream-100: #fff6eb; /* Background */
+  --color-cream-200: #f7ede0;
+  --color-sand-300: #ebe0d1;
+  --color-sand-400: #d9ccba;
+  --color-stone-500: #a89c8d;
+  --color-stone-600: #6f6659;
+  --color-stone-700: #4a453d;
+  --color-ink-900: #1a1a1a; /* Text */
+
+  /* Typography */
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --size-display: 48px;
+  --size-h1: 36px;
+  --size-h2: 30px;
+  --size-h3: 24px;
+  --size-h4: 20px;
+  --size-h5: 18px;
+  --size-body: 16px;
+  --size-small: 14px;
+  --size-caption: 12px;
+
+  --lh-display: 1.08;
+  --lh-heading: 1.2;
+  --lh-body: 1.55;
+  --lh-tight: 1.35;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+
+  --track-display: -0.02em;
+  --track-heading: -0.01em;
+  --track-body: 0em;
+  --track-caps: 0.08em;
+
+  /* Spacing (8pt grid with half-steps) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-30: 120px;
+
+  --gutter-card: 24px;
+  --gutter-section: 64px;
+  --page-max: 1240px;
+  --sidebar-w: 264px;
+  --sidebar-w-collapsed: 76px;
+  --topbar-h: 68px;
+  --tap-min: 44px;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  --radius-card: var(--radius-lg);
+  --radius-control: var(--radius-md);
+  --radius-modal: var(--radius-xl);
+
+  /* Elevation — warm, low-spread shadows tinted with the forest primary */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgb(3 56 36 / 6%);
+  --shadow-sm: 0 2px 6px rgb(3 56 36 / 7%);
+  --shadow-md: 0 6px 16px rgb(3 56 36 / 9%);
+  --shadow-lg: 0 14px 32px rgb(3 56 36 / 12%);
+  --shadow-modal: 0 24px 60px rgb(2 27 18 / 24%);
+  --shadow-inset-line: inset 0 -1px 0 rgb(3 56 36 / 8%);
+  --ring-focus: 0 0 0 3px rgb(255 113 16 / 35%);
+  --ring-accent: 0 0 0 3px rgb(209 249 65 / 50%);
+
+  /* Motion */
+  --dur-hover: 150ms;
+  --dur-click: 120ms;
+  --dur-modal: 250ms;
+  --dur-sidebar: 250ms;
+  --dur-success: 300ms;
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+:root,
+[data-theme="light"] {
+  /* Surface & text */
+  --surface-canvas: var(--color-cream-100);
+  --surface-card: var(--color-cream-200);
+  --surface-raised: var(--color-cream-050);
+  --surface-sunken: var(--color-cream-200);
+  --surface-inverse: var(--color-forest-800);
+  --surface-inverse-soft: var(--color-forest-700);
+  --surface-subtle: var(--color-forest-050);
+  --surface-overlay: rgb(2 27 18 / 55%);
+
+  --border-subtle: var(--color-sand-300);
+  --border-default: var(--color-sand-400);
+  --border-strong: var(--color-forest-800);
+  --border-focus: var(--color-ember-500);
+
+  --text-heading: var(--color-forest-800);
+  --text-body: var(--color-ink-900);
+  --text-muted: var(--color-stone-600);
+  --text-faint: var(--color-stone-500);
+  --text-on-primary: var(--color-cream-100);
+  --text-on-accent: var(--color-forest-800);
+  --text-link: var(--color-ember-600);
+  --text-link-hover: var(--color-ember-700);
+
+  /* Semantic roles */
+  --primary: var(--color-forest-800);
+  --primary-hover: var(--color-forest-700);
+  --primary-active: var(--color-forest-900);
+  --primary-soft: var(--color-forest-050);
+
+  --secondary: var(--color-ember-500);
+  --secondary-hover: var(--color-ember-600);
+  --secondary-active: var(--color-ember-700);
+  --secondary-soft: var(--color-ember-050);
+
+  --accent: var(--color-lime-500);
+  --accent-hover: var(--color-lime-600);
+  --accent-soft: var(--color-lime-100);
+
+  --success: var(--color-forest-500);
+  --success-soft: var(--color-forest-100);
+  --warning: var(--color-amber-500);
+  --warning-soft: var(--color-amber-100);
+  --error: var(--color-clay-500);
+  --error-soft: var(--color-clay-100);
+  --info: var(--color-teal-500);
+  --info-soft: var(--color-teal-100);
+
+  /* Audience & feature roles */
+  --role-ai: var(--color-lime-500);
+  --role-ai-soft: var(--color-lime-100);
+  --role-ai-ink: var(--color-forest-800);
+  --role-student: var(--color-ember-500);
+  --role-student-soft: var(--color-ember-050);
+  --role-teacher: var(--color-teal-500);
+  --role-teacher-soft: var(--color-teal-100);
+  --role-gamification: var(--color-amber-500);
+  --role-gamification-soft: var(--color-amber-100);
+}
+
+:root,
+[data-theme="dark"] {
+  /* Surface & text */
+  --surface-canvas: var(--color-cream-100);
+  --surface-card: var(--color-cream-200);
+  --surface-raised: var(--color-cream-050);
+  --surface-sunken: var(--color-cream-200);
+  --surface-inverse: var(--color-forest-800);
+  --surface-inverse-soft: var(--color-forest-700);
+  --surface-subtle: var(--color-forest-050);
+  --surface-overlay: rgb(2 27 18 / 55%);
+
+  --border-subtle: var(--color-sand-300);
+  --border-default: var(--color-sand-400);
+  --border-strong: var(--color-forest-800);
+  --border-focus: var(--color-ember-500);
+
+  --text-heading: var(--color-forest-800);
+  --text-body: var(--color-ink-900);
+  --text-muted: var(--color-stone-600);
+  --text-faint: var(--color-stone-500);
+  --text-on-primary: var(--color-cream-100);
+  --text-on-accent: var(--color-forest-800);
+  --text-link: var(--color-ember-600);
+  --text-link-hover: var(--color-ember-700);
+
+  /* Semantic roles */
+  --primary: var(--color-forest-800);
+  --primary-hover: var(--color-forest-700);
+  --primary-active: var(--color-forest-900);
+  --primary-soft: var(--color-forest-050);
+
+  --secondary: var(--color-ember-500);
+  --secondary-hover: var(--color-ember-600);
+  --secondary-active: var(--color-ember-700);
+  --secondary-soft: var(--color-ember-050);
+
+  --accent: var(--color-lime-500);
+  --accent-hover: var(--color-lime-600);
+  --accent-soft: var(--color-lime-100);
+
+  --success: var(--color-forest-500);
+  --success-soft: var(--color-forest-100);
+  --warning: var(--color-amber-500);
+  --warning-soft: var(--color-amber-100);
+  --error: var(--color-clay-500);
+  --error-soft: var(--color-clay-100);
+  --info: var(--color-teal-500);
+  --info-soft: var(--color-teal-100);
+
+  /* Audience & feature roles */
+  --role-ai: var(--color-lime-500);
+  --role-ai-soft: var(--color-lime-100);
+  --role-ai-ink: var(--color-forest-800);
+  --role-student: var(--color-ember-500);
+  --role-student-soft: var(--color-ember-050);
+  --role-teacher: var(--color-teal-500);
+  --role-teacher-soft: var(--color-teal-100);
+  --role-gamification: var(--color-amber-500);
+  --role-gamification-soft: var(--color-amber-100);
+}
+
+/* Bridge semantic CSS variables into Tailwind utilities
+   (bg-surface-canvas, text-text-body, border-border-subtle, bg-primary, ...) */
+@theme inline {
+  --color-surface-canvas: var(--surface-canvas);
+  --color-surface-card: var(--surface-card);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-inverse: var(--surface-inverse);
+  --color-surface-inverse-soft: var(--surface-inverse-soft);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-overlay: var(--surface-overlay);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-border-focus: var(--border-focus);
+
+  --color-text-heading: var(--text-heading);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-faint: var(--text-faint);
+  --color-text-on-primary: var(--text-on-primary);
+  --color-text-on-accent: var(--text-on-accent);
+  --color-text-link: var(--text-link);
+  --color-text-link-hover: var(--text-link-hover);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-active: var(--secondary-active);
+  --color-secondary-soft: var(--secondary-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-error: var(--error);
+  --color-error-soft: var(--error-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  --color-role-ai: var(--role-ai);
+  --color-role-ai-soft: var(--role-ai-soft);
+  --color-role-ai-ink: var(--role-ai-ink);
+  --color-role-student: var(--role-student);
+  --color-role-student-soft: var(--role-student-soft);
+  --color-role-teacher: var(--role-teacher);
+  --color-role-teacher-soft: var(--role-teacher-soft);
+  --color-role-gamification: var(--role-gamification);
+  --color-role-gamification-soft: var(--role-gamification-soft);
+}

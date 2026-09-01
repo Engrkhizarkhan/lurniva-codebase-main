@@ -1,0 +1,24 @@
+{
+  "name": "@lurniva/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "files": ["base.js", "react.js", "node.js"],
+  "exports": {
+    "./base": "./base.js",
+    "./react": "./react.js",
+    "./node": "./node.js"
+  },
+  "dependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.9.0",
+    "typescript-eslint": "^8.66.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.7.0 || ^10.8.0"
+  }
+}

@@ -1,0 +1,72 @@
+@import "tailwindcss";
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+@import "@lurniva/ui/tokens.css";
+@import "@lurniva/ui/styles.css";
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background: var(--surface-canvas);
+  color: var(--text-body);
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+/* Only applied once CustomCursor confirms a fine pointer and motion-safe
+   preferences — see components/cursor/custom-cursor.tsx. Everyone else
+   (touch devices, keyboard/no-JS visitors, reduced-motion) keeps the
+   native cursor. */
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button {
+  cursor: none;
+}
+
+/* Hero connector-line animation (design token: --dur-hero-dash). */
+@keyframes lv-dash {
+  to {
+    stroke-dashoffset: -160;
+  }
+}
+
+@keyframes lv-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes lv-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes lv-grow {
+  from {
+    width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "lurniva",
+  "private": true,
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@10.24.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,md,json,astro}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,md,json,astro}\" --cache",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "db:generate": "pnpm --filter @lurniva/db generate",
+    "db:migrate": "pnpm --filter @lurniva/db migrate",
+    "db:studio": "pnpm --filter @lurniva/db studio"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "turbo": "^2.10.8",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@prisma/engines", "esbuild", "prisma"]
+  }
+}

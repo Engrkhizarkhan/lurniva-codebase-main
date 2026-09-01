@@ -1,0 +1,24 @@
+/* Component styling lives inline as Tailwind utility classes (see button.tsx,
+   input.tsx, etc.) so it stays colocated with each component and composes
+   with the design tokens in tokens.css. This file is reserved for any global
+   overrides that don't fit that model. */
+
+/* Thin, brand-accented scrollbar for dark surfaces (e.g. the sidebar nav
+   list) where the default browser scrollbar reads as bulky and off-brand. */
+.scrollbar-accent {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+
+.scrollbar-accent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-accent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-accent::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 9999px;
+}
